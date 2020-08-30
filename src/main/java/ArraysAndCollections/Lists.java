@@ -1,43 +1,46 @@
 package ArraysAndCollections;
 
 import SimpleAlgorithms.SimpleAlgorithms;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Lists {
 
-    public static ArrayList<Integer> prime_sublist(ArrayList<Integer> list) {
+    public static List<Integer> prime_sublist(List<Integer> list) {
 
-        ArrayList<Integer> primelist = new ArrayList<Integer>();
+        List<Integer> primes = list
+                .stream()
+                .filter(w -> SimpleAlgorithms.checkPrime(w))
+                .collect(Collectors.toList());
 
-        for (int i = 0; i < list.size(); i++) {
-            int number = list.get(i);
-
-            if (SimpleAlgorithms.checkPrime(number))
-                primelist.add(number);
-
-        }
-
-        return primelist;
+        return primes;
     }
 
     public static String digitsInDescending(int number) {
 
         int len = Integer.toString(number).length();
-        Integer[] digits = new Integer[len];
+        List<Integer> digits = new ArrayList<>();
         int i = 0;
 
         while (number != 0) {
-            digits[i] = number % 10;
+            digits.add(number % 10);
             number /= 10;
             i++;
         }
 
 
-        Arrays.sort(digits, Collections.reverseOrder());
-        return String.join(" ", Arrays.toString(digits).replace("[", "").replace("]", "").replace(",", "").replace(" ", ""));
+        Arrays.sort(digits.toArray(), Collections.reverseOrder());
+
+        String result = digits.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(""));
+
+        return result;
     }
 
 
